@@ -34,6 +34,7 @@ object UserV3 {
       (JsPath \ "enemies").read[Int] and
       (JsPath \ "is_alive").read[Boolean]
     ) (UserV3.apply _)
+  implicit val writer: Writes[UserV3] = Json.writes[UserV3]
 }
 /*******************  STEP 4  ********************/
 case class UserV4(username: String, friends: Int, enemies: Int, isAlive: Option[Boolean])
@@ -72,6 +73,7 @@ object JsonExampleV1{
 }
 
 /*******************  STEP 7  ********************/
+
 case class MyIdentifier(id: Long)
 
 case class JsonExampleV2(id: MyIdentifier, data: String)
@@ -82,11 +84,30 @@ object JsonExampleV2 {
     (__ \ "data").read[String]
     )(JsonExampleV2.apply _)
 }
+case class roles(firstRole:String,secondRole:String,thirdRole:String)
+case class myFirstJson(firstName:String,secondName:String,staffNumber:Int,startDate:String,staffBoss:UserV3,currentStaff:Boolean)
+
+object myFirstJson{
+  implicit val reader:Reads[myFirstJson] = (
+    (__ \ "firstName").read[String]and
+      (__ \ "secondName").read[String]and
+      (__ \ "staffNumber").read[Int]and
+      (__ \ "startDate").read[String]and
+      (__ \ "staffBoss").read[UserV3]and
+      (__ \ "currentStaff").read[Boolean]
+  )(myFirstJson.apply _)
+  implicit val write:Writes[myFirstJson] = Json.writes[myFirstJson]
+}
+
 
 
 object Test {
 
-  val jsonV1 = """{ "field": "example field", "date": 1459014762000 }"""
+  lazy val jsonV1 = """{ "field": "example field", "date": 1459014762000 }"""
 
-  val jsonV2 = """ { "id": 91, "data": "String data" }"""
+  lazy val jsonV2 = """ { "id": 91, "data": "String data" }"""
+
+  lazy val jsonV3 = """{"username": "JohnJames", "friends": 3, "enemies": 0, "is_alive": true}"""
+
+  lazy val jsonV4 = s"""{"firstName":"John", "secondName":"Jameson","staffNumber":123456,"startDate":"1998-06-09","staffBoss":$jsonV3,"currentStaff":true}"""
 }
