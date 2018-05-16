@@ -24,7 +24,7 @@ object runner extends helper {
     val randomNum = util.Random.nextInt(seq.length)
     seq(randomNum)
   }
-
+//TODO Change stuff
    lazy val fifth = Json.parse(model.toString).as[myFirstJson]
 val json = Json.toJson(model)
   def main(args: Array[String]): Unit = {
